@@ -10,7 +10,12 @@ test('TC-001 | Homepage loading', async ({ page }, testInfo) => {
   expect(response.ok()).toBeTruthy();
 
   await expect(page.locator('body')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Login', exact: true })).toBeVisible();
+
+  // The icon font can contribute a private-use character to the accessible
+  // name, so identify the real header destination and verify its visible text.
+  const loginLink = page.getByRole('banner').locator('a[href="login.php"]');
+  await expect(loginLink).toBeVisible();
+  await expect(loginLink).toContainText('Login');
 
   // Capture portfolio evidence only after every assertion has passed.
   const folder = path.join(process.cwd(), 'screenshots');

@@ -4,8 +4,16 @@
   "description": "Playwright QA automation portfolio for the PHP-based Tipuno Barbershop website.",
   "scripts": {
     "test": "playwright test",
-    "test:chromium": "playwright test --project=Chromium",
-    "test:headed": "playwright test --project=Chromium --headed",
+    "test:chromium": "playwright test --project=chromium",
+    "test:tc001": "playwright test tests/homepage.spec.js --grep=TC-001 --project=chromium",
+    "test:tc002": "playwright test tests/login.spec.js --project=chromium",
+    "test:tc005": "playwright test tests/cart.spec.js --project=chromium",
+    "test:tc008": "playwright test tests/cart.spec.js --grep=TC-008 --project=chromium",
+    "test:tc009": "playwright test tests/cart.spec.js --grep=TC-009 --project=chromium",
+    "test:tc010": "playwright test tests/appointment.spec.js --grep=TC-010 --project=chromium",
+    "test:tc011": "playwright test tests/appointment.spec.js --grep=TC-011 --project=chromium",
+    "test:tc012": "playwright test tests/appointment.spec.js --grep=TC-012 --project=chromium",
+    "test:headed": "playwright test --project=chromium --headed",
     "report": "playwright show-report"
   },
   "keywords": [

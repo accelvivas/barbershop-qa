@@ -1,6 +1,6 @@
 # Test Case Procedures
 
-This document complements [`test-cases.csv`](./test-cases.csv). It reflects behavior inspected in the PHP application on October 23, 2026. Only TC-001 is currently automated. Credentials must be provided through secure local test data and must never be committed.
+This document complements [`test-cases.csv`](./test-cases.csv). It reflects behavior inspected in the PHP application on October 23, 2026. TC-001 and TC-002 are automated. Credentials must be provided through secure local test data and must never be committed.
 
 ## TC-001 — Homepage Loading
 
@@ -17,16 +17,26 @@ This document complements [`test-cases.csv`](./test-cases.csv). It reflects beha
 
 ## TC-002 — Login Using Valid Credentials
 
-- Type: Planned functional test
+- Type: Automated functional test
+- Automation: [`tests/login.spec.js`](../tests/login.spec.js)
+- Execution status: PASS on October 23, 2026
+- Browser and duration: Chromium, 4.7-second test; 5.5-second overall run
 - Preconditions: Apache and MySQL are running; a dedicated regular QA account exists; the browser is logged out.
 - Procedure:
-  1. Open `login.php`.
-  2. Enter the QA account email in `Email Address`.
-  3. Enter the QA account password in `Password`.
-  4. Select `Login`.
-  5. Verify the user is authenticated and reaches `index.php`, unless the application has stored another intended destination.
-  6. Verify authenticated profile controls are displayed.
-- Expected: Authentication succeeds for the valid account without exposing credentials in logs, screenshots, or source control.
+  1. Open the homepage.
+  2. Select the `Login` link and verify navigation to `login.php`.
+  3. Enter the environment-provided email in `Email Address`.
+  4. Enter the environment-provided password in `Password`.
+  5. Select `Login`.
+  6. Verify navigation to `index.php`.
+  7. Verify the authenticated profile control is visible and the public `Login` link is absent.
+  8. Open the profile control and verify the `Logout` action.
+  9. Mask account identity fields, capture the PASS screenshot, and attach it to the HTML report.
+- Test data: `BARBERSHOP_TEST_EMAIL` and `BARBERSHOP_TEST_PASSWORD` from the ignored local `.env`; the password is omitted from documentation and evidence.
+- Expected: Authentication succeeds, the authenticated account interface appears, and `screenshots/TC-002_Valid_Login_chromium_PASS.png` is created only after all assertions pass.
+- Actual: All assertions passed. The browser reached `index.php`, displayed the authenticated profile control and Logout action, and removed the public Login link.
+- Evidence: `screenshots/TC-002_Valid_Login_chromium_PASS.png` and the generated Playwright HTML report. Account identity fields are masked in the screenshot.
+- Remarks: A dedicated dummy QA account was created after explicit approval. Its password remains only in the ignored local `.env` file.
 
 ## TC-003 — Login Using Invalid Credentials
 
@@ -67,15 +77,18 @@ This document complements [`test-cases.csv`](./test-cases.csv). It reflects beha
 - Expected: The selected product is stored once with quantity 1 and the confirmation is shown.
 - Boundary: Checkout, payment, database persistence, and authenticated-session synchronization are outside this initial case.
 
-## TC-006 — Learn Our Story Button Functionality
+## TC-006 — Logout Functionality
 
-- Type: Planned navigation test
-- Preconditions: The public homepage is available.
+- Type: Planned authentication test
+- Preconditions: Apache and MySQL are running; the application database is available; a dedicated regular QA account exists; and the user is authenticated.
 - Procedure:
-  1. Open the homepage.
-  2. Locate `Learn Our Story`.
-  3. Select the link.
-  4. Verify navigation to the configured `about.php` destination.
-  5. Verify a successful HTTP response and visible destination content.
-- Expected: The configured destination loads successfully.
-- Note: The source was inspected, but this test has not been run. A source-level concern must not be reported as an application defect until execution reproduces it and the expected behavior is confirmed.
+  1. Log in using the dedicated QA account from the ignored local `.env` file.
+  2. Verify the authenticated profile control is visible.
+  3. Open the profile menu.
+  4. Select `Logout`.
+  5. Wait for the logout transition to redirect to `index.php`.
+  6. Verify the public `Login` link is visible.
+  7. Verify the authenticated profile control is absent.
+- Test data: `BARBERSHOP_TEST_EMAIL` and `BARBERSHOP_TEST_PASSWORD` from the ignored local `.env`; never expose the password in source control or evidence.
+- Expected: The PHP session is destroyed, the browser returns to `index.php`, and only the unauthenticated navigation is available.
+- Status: NOT RUN. This case is documented but has not yet been automated or executed.

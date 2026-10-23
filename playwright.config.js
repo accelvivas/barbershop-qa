@@ -1,13 +1,12 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
+import { existsSync } from 'node:fs';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+// Load local test configuration without adding another dependency.
+// The .env file is ignored by Git; .env.example documents required keys.
+if (existsSync('.env')) {
+  process.loadEnvFile('.env');
+}
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -41,17 +40,17 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'Chromium',
+      name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
 
     {
-      name: 'Firefox',
+      name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
 
     {
-      name: 'WebKit',
+      name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
 
