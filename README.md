@@ -1,5 +1,7 @@
 # Barbershop Website — QA Automation Testing
 
+## [View the Complete QA Automation Test Report (PDF)](test-reports/Barbershop_QA_Automation_Test_Report_.pdf)
+
 ## 1. Project Overview
 
 This repository is a QA automation and test-documentation portfolio for a previous academic PHP project. It demonstrates traceable test cases, Playwright automation, evidence handling, execution reporting, and defect-reporting practices without overstating coverage.
