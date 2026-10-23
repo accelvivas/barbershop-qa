@@ -1,173 +1,157 @@
-# Barbershop Website — QA Automation Testing
+# Tipuno Barbershop — QA Automation Testing
 
-## [View the Complete QA Automation Test Report (PDF)](test-reports/Barbershop_QA_Automation_Test_Report_.pdf)
+**Playwright + JavaScript | Functional & Regression Testing | QA Portfolio Project**
 
-## 1. Project Overview
+📄 **[View the Complete QA Automation Test Report (PDF)](test-reports/Barbershop_QA_Automation_Test_Report_.pdf)**
 
-This repository is a QA automation and test-documentation portfolio for a previous academic PHP project. It demonstrates traceable test cases, Playwright automation, evidence handling, execution reporting, and defect-reporting practices without overstating coverage.
+This repository contains my automated test scripts and quality assurance documentation for **Tipuno Barbershop**, a PHP-based web application. I used **Playwright** to validate important customer workflows, investigate test failures, and run a repeatable regression suite against the application on **localhost (XAMPP)**.
 
-## 2. Testing Objectives
+The original Barbershop website is a separate application. This repository focuses on **testing**, not on hosting or redistributing its PHP source code.
 
-- Establish a reliable homepage smoke test.
-- Document positive, negative, validation, cart, and navigation scenarios.
-- Produce repeatable browser-specific results and useful failure diagnostics.
-- Maintain evidence and reports that distinguish observed results from planned work.
+## Test Execution Results
 
-## 3. Application Under Test
+| Metric | Result |
+|---|---|
+| Test cases executed | **12** |
+| Passed | **12** |
+| Failed | **0** |
+| Skipped / Flaky | **0 / 0** |
+| Pass rate | **100%** |
+| Complete regression duration | **52.6 seconds** |
+| Browser | **Chromium** |
+| Environment | **Windows, localhost, XAMPP** |
+| Execution date | **October 23, 2026** |
 
-- Application: PHP-Based Barbershop Website (Tipuno Barbershop)
-- Local URL: `http://localhost/barbershop-1/`
-- Hosting: Local XAMPP environment only; this is not a publicly deployed website.
-- Separation: The QA project is contained in `barbershop-qa/`; the PHP application's business logic and database are outside this folder.
+> **Scope:** These results apply to the 12 executed Chromium test cases in the local test environment. They do not establish that the entire application is defect-free. Individual durations in the report were captured in separate executions and do not add up to the full regression duration.
 
-## 4. Technologies and Tools
+## Application and Testing Scope
 
-- Playwright 1.64.1
-- JavaScript / Node.js
-- Chromium, Firefox, and WebKit browser projects
-- VS Code
-- XAMPP, PHP, and MySQL (confirmed from the application implementation)
-- Git and GitHub
+The Barbershop website provides customer login, product browsing, shopping cart actions, and appointment management. The tests cover both positive and negative scenarios, including required-field validation and persistence-related UI checks.
 
-## 5. Testing Scope
+| ID | Module | Automated test | Result |
+|---|---|---|---|
+| TC-001 | Homepage | Homepage loading | PASS |
+| TC-002 | Authentication | Login with valid credentials | PASS |
+| TC-003 | Authentication | Login with invalid password | PASS |
+| TC-004 | Authentication | Login with empty fields | PASS |
+| TC-005 | Shopping Cart | Add product to shopping cart | PASS |
+| TC-006 | Authentication | Logout and protected Shop access | PASS |
+| TC-007 | Shopping Cart | Shopping cart quantity adjustment | PASS |
+| TC-008 | Shopping Cart | Remove product from shopping cart | PASS |
+| TC-009 | Product Filtering | Product category filtering | PASS |
+| TC-010 | Appointment Booking | Appointment booking form validation | PASS |
+| TC-011 | Appointment Booking | Successful appointment booking | PASS* |
+| TC-012 | Appointment Management | Appointment cancellation | PASS |
 
-The current scope includes homepage availability, login and logout scenarios, required-field validation, and homepage cart behavior. Payment processing, appointment booking, admin workflows, accessibility auditing, API testing, performance testing, and broad cross-browser regression remain outside the implemented automation scope.
+**TC-011 clarification:** The Playwright run passed its implemented checks, including the confirmation interface, booking-reference format, and presence of a unique test marker on **My Appointments**. An independent record-specific/database persistence check remains a recommended improvement.
 
-## 6. Test Case Coverage
+## Tools and Techniques
 
-| ID | Scenario | Current Coverage |
-| --- | --- | --- |
-| TC-001 | Homepage Loading | Automated |
-| TC-002 | Login Using Valid Credentials | Automated / PASS in Chromium |
-| TC-003 | Login Using Invalid Credentials | Planned / NOT RUN |
-| TC-004 | Login With Empty Required Fields | Planned / NOT RUN |
-| TC-005 | Shopping Cart Functionality | Planned / NOT RUN |
-| TC-006 | Logout Functionality | Planned / NOT RUN |
+- **Playwright Test + JavaScript** — browser automation, assertions, and regression execution
+- **Playwright Codegen** — exploring workflows and discovering candidate locators
+- **Playwright HTML Reporter / Trace Viewer** — reviewing execution results and debugging failures
+- **VS Code** — writing and maintaining test scripts
+- **XAMPP (Apache / MySQL) + PHP** — local application test environment
+- **Environment variables** — supplying credentials for a dedicated dummy QA account
 
-See the [CSV test cases](./test-cases/test-cases.csv) and [detailed procedures](./test-cases/test-case-documentation.md).
+Techniques practiced include scoped locators, positive and negative testing, native form-validation checks, reusable login helpers, state-change assertions, and checking cart or appointment status after navigation or reload.
 
-## 7. Test Execution Results
+## Repository Organization
 
-TC-001 was independently verified by Codex in Chromium on October 23, 2026. The test passed in 3.7 seconds, while the complete one-test run took 6.5 seconds. Separately, the user reported an earlier successful Chromium execution of approximately 1.5 seconds on the same date.
-
-TC-002 was independently verified in Chromium after provisioning an approved dedicated QA account. It passed all login, redirect, and authenticated-interface assertions in 4.7 seconds; the complete one-test run took 5.5 seconds. TC-003 through TC-006 remain NOT RUN. Current counts and evidence references are maintained in the [test execution summary](./test-reports/test-execution-summary.md).
-
-## 8. QA Automation Approach
-
-Test names start with their traceable case ID. Shared configuration loads ignored local environment values, supplies the local base URL, defines separate desktop browser projects, captures screenshots on failure, retains traces on failure, and generates an HTML report. TC-001 and TC-002 create intentional PASS screenshots only after every assertion succeeds. TC-002 masks account identity fields before capturing evidence.
-
-GitHub Actions currently validates dependency installation, Playwright configuration, and test discovery only. It does not claim remote execution results because the application under test is intentionally separate and available only through local XAMPP.
-
-Secrets and real user credentials must never be hardcoded. Authenticated tests read a dedicated QA account from the ignored local `.env`; `.env.example` documents the required keys without containing a usable password.
-
-## 9. Project Folder Structure
+The testing project is organized around these files and folders:
 
 ```text
 barbershop-qa/
-├── .github/workflows/playwright.yml
-├── .env.example
-├── bug-reports/
-│   ├── README.md
-│   └── bug-report-template.md
-├── screenshots/
-│   └── README.md
-├── test-cases/
-│   ├── test-case-documentation.md
-│   └── test-cases.csv
-├── test-reports/
-│   ├── README.md
-│   └── test-execution-summary.md
 ├── tests/
+│   ├── helpers/
+│   │   └── auth.js
 │   ├── homepage.spec.js
-│   └── login.spec.js
-├── .gitignore
-├── package-lock.json
-├── package.json
+│   ├── login.spec.js
+│   ├── cart.spec.js
+│   └── appointment.spec.js
+├── test-cases/                  # Test case documentation (if included)
+├── test-reports/                # Curated portfolio reports (if included)
+├── screenshots/                 # Sanitized evidence (if included)
 ├── playwright.config.js
+├── package.json
+├── .gitignore
 └── README.md
 ```
 
-Generated `playwright-report/` and `test-results/` folders may appear after execution and are intentionally ignored by Git.
+> Some documentation/evidence folders are optional. Keep only folders and links that you actually publish in your repository.
 
-## 10. Installation and Setup
+## Local Setup
 
-Prerequisites:
+**Prerequisites:** Node.js and npm, the Barbershop PHP application running locally, XAMPP with its required services, and a dedicated dummy test account. The QA repository alone does **not** start the PHP application.
 
-- Node.js 20.12 or later
-- XAMPP with Apache running
-- The PHP application located at `C:\xampp\htdocs\barbershop-1`
-- MySQL running for database-dependent scenarios
+1. Start Apache and MySQL in XAMPP, and confirm the website opens at `http://localhost/barbershop-1/`.
+2. Open this automation repository in VS Code.
+3. Install dependencies and the Chromium browser:
 
-From PowerShell:
+   ```powershell
+   npm.cmd install
+   npx.cmd playwright install chromium
+   ```
 
-```powershell
-cd C:\xampp\htdocs\barbershop-1\barbershop-qa
-npm.cmd install
-npx.cmd playwright install
-Copy-Item .env.example .env
-```
+4. Create a local `.env` file in the QA project root (do not commit it):
 
-Confirm that `http://localhost/barbershop-1/` opens before running tests. Edit the ignored `.env` with an approved dedicated QA account before running TC-002. Never commit that file. A different URL can be supplied with `BARBERSHOP_BASE_URL`.
+   ```dotenv
+   BARBERSHOP_TEST_EMAIL=your-dummy-test-email@example.com
+   BARBERSHOP_TEST_PASSWORD=your-dummy-test-password
+   ```
 
-## 11. How to Run Automated Tests
+5. Make sure the dummy account and test data are available. Appointment tests may create or cancel records; use a **separate QA database** rather than real customer data.
 
-Run the portfolio's implemented test in Chromium:
+## Run Automated Tests
 
-```powershell
-npm.cmd run test:chromium
-```
-
-Run all configured browser projects:
+Run the full Chromium regression suite, sequentially:
 
 ```powershell
-npx.cmd playwright test
+npx.cmd playwright test --project=chromium --workers=1
 ```
 
-Run TC-002 in Chromium only:
+Run one test case:
 
 ```powershell
-npm.cmd run test:tc002
+npx.cmd playwright test tests/cart.spec.js --grep "TC-005" --project=chromium --headed
 ```
 
-Run Chromium with a visible browser:
+Run authentication tests:
 
 ```powershell
-npm.cmd run test:headed
+npx.cmd playwright test tests/login.spec.js --project=chromium
 ```
 
-## 12. How to View Test Reports
-
-After a test run:
+Open the Playwright HTML report (when generated by the configured reporter):
 
 ```powershell
 npx.cmd playwright show-report
 ```
 
-The generated HTML report is stored in `playwright-report/`. It is a local build artifact rather than maintained source documentation.
+For troubleshooting, inspect the failing assertion, screenshot, error context, and Playwright trace. **Do not confuse a failed locator/assertion with a confirmed application defect** until its cause is investigated.
 
-## 13. Test Evidence
+## Test Report and Evidence
 
-Verified successful TC-001 runs save `screenshots/TC-001_Homepage_<Browser>_PASS.png`. When TC-002 receives a valid QA account and passes, it saves `screenshots/TC-002_Valid_Login_chromium_PASS.png`. Both are attached to the HTML report. Playwright stores automatic failure screenshots and retained traces in `test-results/`. Review and sanitize all evidence before publication.
+The full portfolio report documents each test case's objective, preconditions, steps, expected versus actual results, and curated execution evidence.
 
-## 14. Bug Reporting
+For public sharing, keep only sanitized screenshots and summary reports. Do **not** commit `.env`, real credentials, unsanitized Playwright HTML reports, traces, or customer data; recorded browser actions may expose input values.
 
-Use the [bug report template](./bug-reports/bug-report-template.md) only after triage. A failed automation script may indicate a product defect, an outdated test, bad data, or an environment problem; failure alone is not proof of an application bug.
+## Findings and Future Improvements
 
-## 15. Challenges and Learning Outcomes
+The executed Chromium suite completed with **12 passes and no reported failures**. Planned improvements are:
 
-This portfolio emphasizes maintainable locators, HTTP and UI assertions, explicit test traceability, honest result reporting, cross-browser configuration, diagnostic evidence, and safe handling of local test data.
+1. **Strengthen TC-011:** Locate the exact created appointment record and verify service, schedule, owner, and status; check database persistence when authorized.
+2. **Isolate test data:** Reset the cart and clean up dummy bookings safely so repeated runs remain independent.
+3. **Expand browser coverage:** Execute and document Firefox and WebKit results separately.
+4. **Add CI testing:** Run safe, non-destructive tests in GitHub Actions after preparing a reproducible test environment.
+5. **Extend test coverage:** Add boundary cases, unavailable booking slots, duplicate bookings, and session-expiration checks.
+6. **Improve maintainability:** Introduce Page Object Model where repetition justifies it and standardize evidence collection.
 
-## 16. Future Improvements
+## Author
 
-- Automate isolated QA test-data setup and cleanup in a non-production database.
-- Automate TC-003 through TC-006 with isolated test data.
-- Add reusable page objects and fixtures when the suite grows.
-- Add accessibility and responsive-layout checks.
-- Add authenticated appointment and order workflows using disposable QA accounts.
-- Prepare CI with a reproducible PHP/MySQL test environment before enabling unattended runs.
+**Gian Accel V. Hernandez**  
+QA Automation Portfolio Project | Software QA Internship Preparation
 
-## 17. Author
+---
 
-**Gian Accel V. Hernandez**
-
-QA Automation portfolio prepared for Software QA and QA Automation internship applications.
+*This project showcases hands-on learning in software QA and Playwright automation. The Barbershop website was tested in a local environment and is not publicly hosted through this repository.*
